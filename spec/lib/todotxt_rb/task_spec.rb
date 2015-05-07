@@ -40,6 +40,11 @@ describe TodotxtRb::Task do
     specify "outputs using the original text" do
       expect(undone_task.to_str).to eq undone_task_text
     end
+
+    specify "can be told to complete itself" do
+      undone_task.done!
+      expect(undone_task).to be_done
+    end
   end
 
   let(:simple_task_text) { "Clean desk" }
@@ -204,6 +209,10 @@ describe TodotxtRb::Task do
       end
 
       it "should print nicely" do
+        expect(subject.to_s).to eq "x (B) 2015-04-29 2015-04-28 Clean desk @work +new-site"
+      end
+
+      it "should convert to string nicely" do
         expect(subject.to_str).to eq "x (B) 2015-04-29 2015-04-28 Clean desk @work +new-site"
       end
     end

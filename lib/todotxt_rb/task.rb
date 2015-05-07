@@ -36,6 +36,8 @@ module TodotxtRb
       string.chomp(' ')
     end
 
+    alias_method :to_s, :to_str
+
     def done?
       self.done
     end
@@ -50,6 +52,11 @@ module TodotxtRb
 
     def has_project?(project)
       @projects.include? project
+    end
+
+    def done!
+      self.done = true
+      self.completed = Date.today
     end
 
     private
