@@ -21,28 +21,19 @@ arguments :strict
 desc 'Describe some switch here'
 switch [:s,:switch]
 
-desc 'Describe some flag here'
-default_value 'the default'
-arg_name 'The name of the argument'
-flag [:f,:flagname]
+desc 'file'
+default_value '~/.todo.txt'
+arg_name 'filename'
+flag [:f,:filename]
 
-desc 'Describe add here'
-arg_name 'Describe arguments to add here'
-command :add do |c|
-  c.desc 'Describe a switch to add'
-  c.switch :s
-
-  c.desc 'Describe a flag to add'
-  c.default_value 'default'
-  c.flag :f
+desc 'Add a new task to the todo.txt file'
+arg_name 'Text to add'
+command [:add, :a] do |c|
   c.action do |global_options,options,args|
-
-    # Your command logic here
-     
-    # If you have any errors, just raise them
-    # raise "that command made no sense"
-
-    puts "add command ran"
+    File.open(global_options[:f], 'a') do |file|
+      task = TodotxtRb::Task.new(args[0])
+      file.puts task
+    end
   end
 end
 
@@ -94,11 +85,18 @@ command :do do |c|
   end
 end
 
-desc 'Describe list here'
-arg_name 'Describe arguments to list here'
-command :list do |c|
+desc 'List out tasks from todo.txt file'
+arg_name 'filter'
+command [:list, :ls] do |c|
   c.action do |global_options,options,args|
-    puts "list command ran"
+    array = []
+    File.open(global_options[:f]) do |file|
+      file.each_line do |line|
+        array.push TodotxtRb::Task.new(line)
+      end
+    end
+    list = TodotxtRb::List.new(array)
+    puts list
   end
 end
 
@@ -110,19 +108,33 @@ command :listall do |c|
   end
 end
 
-desc 'Describe listcon here'
+desc 'List all contexts from the todo.txt file'
 arg_name 'Describe arguments to listcon here'
 command :listcon do |c|
   c.action do |global_options,options,args|
-    puts "listcon command ran"
+    array = []
+    File.open(global_options[:f]) do |file|
+      file.each_line do |line|
+        array.push TodotxtRb::Task.new(line)
+      end
+    end
+    list = TodotxtRb::List.new(array)
+    puts list.contexts
   end
 end
 
-desc 'Describe listpri here'
+desc 'List all priorities from the todo.txt file'
 arg_name 'Describe arguments to listpri here'
 command :listpri do |c|
   c.action do |global_options,options,args|
-    puts "listpri command ran"
+    array = []
+    File.open(global_options[:f]) do |file|
+      file.each_line do |line|
+        array.push TodotxtRb::Task.new(line)
+      end
+    end
+    list = TodotxtRb::List.new(array)
+    puts list.priorities
   end
 end
 
@@ -130,7 +142,14 @@ desc 'Describe listproj here'
 arg_name 'Describe arguments to listproj here'
 command :listproj do |c|
   c.action do |global_options,options,args|
-    puts "listproj command ran"
+    array = []
+    File.open(global_options[:f]) do |file|
+      file.each_line do |line|
+        array.push TodotxtRb::Task.new(line)
+      end
+    end
+    list = TodotxtRb::List.new(array)
+    puts list.projects
   end
 end
 

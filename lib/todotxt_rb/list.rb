@@ -7,6 +7,14 @@ module TodotxtRb
       end
     end
 
+    def priorities
+      array = []
+      self.each do |task|
+        array.push task.priority if task.priority
+      end
+      array.uniq.sort
+    end
+
     def projects
       array = []
       self.each do |task|

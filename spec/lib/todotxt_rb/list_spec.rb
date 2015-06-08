@@ -67,6 +67,11 @@ describe TodotxtRb::List do
     expect(list.to_str).to include string
   end
 
+  it "can list its priorities" do
+    expect(list.priorities).to include "A"
+    expect(list.priorities).to_not include "D"
+  end
+
   describe "prints out" do
 
     specify "nicely" do
